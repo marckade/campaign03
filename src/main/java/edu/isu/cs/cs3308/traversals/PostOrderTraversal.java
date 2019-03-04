@@ -5,9 +5,10 @@ import edu.isu.cs.cs3308.structures.Tree;
 
 import java.util.List;
 
-public class InOrderTraversal<E> extends DepthFirstTraversal<E> {
+public class PostOrderTraversal<E> extends DepthFirstTraversal<E> {
 
-    public InOrderTraversal(Tree<E> tree) {
+
+    public PostOrderTraversal(Tree<E> tree) {
         super(tree);
     }
 
@@ -16,3 +17,4 @@ public class InOrderTraversal<E> extends DepthFirstTraversal<E> {
         super.subtree(p, snapshot);
     }
 }
+

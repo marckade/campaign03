@@ -7,6 +7,7 @@ import edu.isu.cs.cs3308.structures.Tree;
 public class AbstractTraversal<E> implements  TreeTraversal<E> {
 
     public Tree<E> tree;
+
     public TraversalCommand command = null;
 
     @Override
@@ -22,5 +23,12 @@ public class AbstractTraversal<E> implements  TreeTraversal<E> {
     @Override
     public void setCommand(TraversalCommand cmd) {
 
+    }
+
+    public AbstractTraversal(Tree<E> tree) {
+        if (tree == null) {
+            throw new IllegalArgumentException("Tree is null");
+        }
+        this.tree = tree;
     }
 }

@@ -1,3 +1,4 @@
+/*
 package edu.isu.cs.cs3308.traversals;
 
 import edu.isu.cs.cs3308.structures.Node;
@@ -9,10 +10,12 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+*/
 /**
  *
  * @author fate
- */
+ *//*
+
 public class BreadthFirstTraversalTest {
 
     private TreeTraversal<Integer> fixture;
@@ -51,9 +54,11 @@ public class BreadthFirstTraversalTest {
     public void tearDown() {
     }
 
-    /**
+    */
+/**
      * Test of traverse method, of class BreadthFirstTraversal.
-     */
+     *//*
+
     @Test
     public void testTraverse() {
         Iterable<Node<Integer>> trav = fixture.traverse();
@@ -78,9 +83,11 @@ public class BreadthFirstTraversalTest {
         fixture = new BreadthFirstTraversal(tree);
     }
 
-    /**
+    */
+/**
      * Test of traverseFrom method, of class BreadthFirstTraversal.
-     */
+     *//*
+
     @Test
     public void testTraverseFrom() {
         Integer[] vals = {2, 4, 5};
@@ -103,3 +110,4 @@ public class BreadthFirstTraversalTest {
         fixture.traverseFrom(left);
     }
 }
+*/
