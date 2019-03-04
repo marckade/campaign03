@@ -2,8 +2,12 @@ package edu.isu.cs.cs3308.traversals;
 
 import edu.isu.cs.cs3308.structures.Node;
 import edu.isu.cs.cs3308.traversals.commands.TraversalCommand;
+import edu.isu.cs.cs3308.structures.Tree;
 
 public class AbstractTraversal<E> implements  TreeTraversal<E> {
+
+    public Tree<E> tree;
+    public TraversalCommand command = null;
 
     @Override
     public Iterable<Node<E>> traverse() {

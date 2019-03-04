@@ -6,11 +6,12 @@ public class BreadthFirstTraversal<E> extends AbstractTraversal<E> {
 
     @Override
     public Iterable<Node<E>> traverse() {
-        return super.traverse();
+        return traverseFrom(tree.root());
     }
 
     @Override
     public Iterable<Node<E>> traverseFrom(Node<E> node) {
-        return super.traverseFrom(node);
+        return null;
+
     }
 }
