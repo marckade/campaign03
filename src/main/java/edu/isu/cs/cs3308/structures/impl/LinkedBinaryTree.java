@@ -1,8 +1,11 @@
 package edu.isu.cs.cs3308.structures.impl;
 
+import com.google.common.collect.Iterables;
 import edu.isu.cs.cs3308.structures.BinaryTree;
 import edu.isu.cs.cs3308.structures.Node;
 import edu.isu.cs.cs3308.structures.Tree;
+
+import java.util.LinkedList;
 
 
 public class LinkedBinaryTree<E> implements BinaryTree<E>, Tree<E> {
@@ -77,13 +80,20 @@ public class LinkedBinaryTree<E> implements BinaryTree<E>, Tree<E> {
          * @return The parent node of this class. Can be null.
          */
         @Override
-        public Node<E> getParent() {
+        public BinaryTreeNode<E> getParent() {
             return this.parent;
         }
     }
 
+
+
+
+
+
+    // Constructor for the binary tree node.
     public BinaryTreeNode<E> createNode(E element, BinaryTreeNode<E> parent, BinaryTreeNode<E> left, BinaryTreeNode<E> right)
     {
+        checkNull(element);
         return new BinaryTreeNode<>(element,parent,left,right);
     }
 
@@ -104,7 +114,11 @@ public class LinkedBinaryTree<E> implements BinaryTree<E>, Tree<E> {
      */
     @Override
     public Node<E> left(Node<E> p) throws IllegalArgumentException {
-        return null;
+
+        //Couldnt get it to work without ()
+        BinaryTreeNode<E> treeNode = (BinaryTreeNode<E>)validate(p);
+
+        return treeNode.getLeft();
     }
 
     /**
@@ -117,7 +131,10 @@ public class LinkedBinaryTree<E> implements BinaryTree<E>, Tree<E> {
      */
     @Override
     public Node<E> right(Node<E> p) throws IllegalArgumentException {
-        return null;
+
+        BinaryTreeNode<E> treeNode = (BinaryTreeNode<E>)validate(p);
+
+        return treeNode.getRight();
     }
 
     /**
@@ -132,7 +149,30 @@ public class LinkedBinaryTree<E> implements BinaryTree<E>, Tree<E> {
      */
     @Override
     public Node<E> sibling(Node<E> p) throws IllegalArgumentException {
-        return null;
+
+        BinaryTreeNode<E> treeNode = (BinaryTreeNode<E>)validate(p);
+
+        //Check for parent and return null if it does not exist
+        if(treeNode.getParent() == null)
+        {
+            return null;
+        }
+        else
+        {
+            BinaryTreeNode<E> parent = treeNode.getParent();
+            BinaryTreeNode<E> tempLeft = parent.getLeft();
+            BinaryTreeNode<E> tempRight = parent.getRight();
+
+            if(treeNode == tempLeft)
+            {
+                return tempRight;
+            }
+            else
+            {
+                return tempLeft;
+            }
+        }
+
     }
 
     /**
@@ -148,7 +188,22 @@ public class LinkedBinaryTree<E> implements BinaryTree<E>, Tree<E> {
      */
     @Override
     public Node<E> addLeft(Node<E> p, E element) throws IllegalArgumentException {
-        return null;
+
+        checkNull(element);
+
+        BinaryTreeNode<E> treeNode = (BinaryTreeNode<E>)validate(p);
+
+        if(treeNode.getLeft() != null)
+        {
+            throw new IllegalArgumentException("Left already exists");
+        }
+        else
+        {
+            treeNode.setLeft(createNode(element,treeNode,null,null));
+            size++;
+
+            return treeNode.getLeft();
+        }
     }
 
     /**
@@ -164,7 +219,22 @@ public class LinkedBinaryTree<E> implements BinaryTree<E>, Tree<E> {
      */
     @Override
     public Node<E> addRight(Node<E> p, E element) throws IllegalArgumentException {
-        return null;
+
+        checkNull(element);
+
+        BinaryTreeNode<E> treeNode = (BinaryTreeNode<E>)validate(p);
+
+        if(treeNode.getRight() != null)
+        {
+            throw new IllegalArgumentException("Right already exists");
+        }
+        else
+        {
+            treeNode.setRight(createNode(element,treeNode,null,null));
+            size++;
+
+            return treeNode.getRight();
+        }
     }
 
     /**
@@ -172,7 +242,13 @@ public class LinkedBinaryTree<E> implements BinaryTree<E>, Tree<E> {
      */
     @Override
     public Node<E> root() {
-        return null;
+
+        if(size == 0)
+        {
+            return null;
+        }
+
+        return root;
     }
 
     /**
@@ -186,7 +262,24 @@ public class LinkedBinaryTree<E> implements BinaryTree<E>, Tree<E> {
      */
     @Override
     public Node<E> setRoot(E item) {
-        return null;
+
+        if(item == null)
+        {
+            root = null;
+            size = 0;
+        }
+        else
+        {
+            if(isEmpty() || item != root().getElement())
+            {
+                BinaryTreeNode<E> newNode= createNode(item,null,null,null);
+
+                root = newNode;
+                size = 1;
+            }
+        }
+
+        return root;
     }
 
     /**
@@ -200,7 +293,17 @@ public class LinkedBinaryTree<E> implements BinaryTree<E>, Tree<E> {
      */
     @Override
     public Node<E> parent(Node<E> p) throws IllegalArgumentException {
-        return null;
+
+        checkValid(p);
+
+        if(isRoot(p))
+        {
+            return null;
+        }
+        else
+        {
+            return p.getParent();
+        }
     }
 
     /**
@@ -214,7 +317,22 @@ public class LinkedBinaryTree<E> implements BinaryTree<E>, Tree<E> {
      */
     @Override
     public Iterable<Node<E>> children(Node<E> p) throws IllegalArgumentException {
-        return null;
+
+        BinaryTreeNode<E> treeNode = (BinaryTreeNode<E>)validate(p);
+
+        LinkedList<Node<E>> listOfChildren = new LinkedList<>();
+
+        if(treeNode.getLeft() !=null)
+        {
+            listOfChildren.addLast(treeNode.getLeft());
+        }
+
+        if(treeNode.getRight() != null)
+        {
+            listOfChildren.addLast(treeNode.getRight());
+        }
+
+        return listOfChildren;
     }
 
     /**
@@ -226,7 +344,9 @@ public class LinkedBinaryTree<E> implements BinaryTree<E>, Tree<E> {
      */
     @Override
     public int numChildren(Node<E> p) throws IllegalArgumentException {
-        return 0;
+
+        return Iterables.size(children(p));
+
     }
 
     /**
@@ -239,7 +359,10 @@ public class LinkedBinaryTree<E> implements BinaryTree<E>, Tree<E> {
      */
     @Override
     public boolean isInternal(Node<E> p) throws IllegalArgumentException {
-        return false;
+
+        boolean hasChildren = (numChildren(p) > 0);
+
+        return hasChildren;
     }
 
     /**
@@ -252,7 +375,8 @@ public class LinkedBinaryTree<E> implements BinaryTree<E>, Tree<E> {
      */
     @Override
     public boolean isExternal(Node<E> p) throws IllegalArgumentException {
-        return false;
+
+        return (numChildren(p) == 0);
     }
 
     /**
@@ -265,7 +389,9 @@ public class LinkedBinaryTree<E> implements BinaryTree<E>, Tree<E> {
      */
     @Override
     public boolean isRoot(Node<E> p) throws IllegalArgumentException {
-        return false;
+        checkValid(p);
+
+        return (p == root());
     }
 
     /**
@@ -282,7 +408,36 @@ public class LinkedBinaryTree<E> implements BinaryTree<E>, Tree<E> {
      */
     @Override
     public Node<E> insert(E item, Node<E> p) {
-        return null;
+
+        checkNull(item);
+
+        if(isEmpty())
+        {
+            return setRoot(item);
+        }
+        else
+        {
+            checkValid(p);
+
+            if(isExternal(p))
+            {
+                return addLeft(p,item);
+            }
+            else
+            {
+                if(left(p) == null)
+                {
+                    return addLeft(p,item);
+                }
+
+                if(right(p) == null)
+                {
+                    return addRight(p,item);
+                }
+            }
+        }
+
+        throw new IllegalArgumentException("Failed to insert node");
     }
 
     /**
@@ -297,7 +452,32 @@ public class LinkedBinaryTree<E> implements BinaryTree<E>, Tree<E> {
      */
     @Override
     public boolean remove(E item, Node<E> p) throws IllegalArgumentException {
-        return false;
+        if (item == null || p == null) {
+            return false;
+        }
+
+        checkNull(item);
+        BinaryTreeNode<E> btn = (BinaryTreeNode<E>)validate(p);
+
+        if (isExternal(btn)) {
+            return false;
+        }
+        else {
+            if (btn.getLeft() != null && item == btn.getLeft().getElement()) {
+                BinaryTreeNode<E> removeChild = btn.getLeft();
+                removeChild.setParent(null);
+                btn.setLeft(null);
+                size--;
+                return true;
+            }
+            else {
+                BinaryTreeNode<E> removeChild = btn.getRight();
+                removeChild.setParent(null);
+                btn.setRight(null);
+                size--;
+                return true;
+            }
+        }
     }
 
     /**
@@ -305,7 +485,7 @@ public class LinkedBinaryTree<E> implements BinaryTree<E>, Tree<E> {
      */
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     /**
@@ -314,7 +494,7 @@ public class LinkedBinaryTree<E> implements BinaryTree<E>, Tree<E> {
      */
     @Override
     public boolean isEmpty() {
-        return false;
+        return (root() == null);
     }
 
     /**
@@ -329,7 +509,18 @@ public class LinkedBinaryTree<E> implements BinaryTree<E>, Tree<E> {
      */
     @Override
     public E set(Node<E> node, E element) throws IllegalArgumentException {
-        return null;
+
+        checkNull(element);
+        checkValid(node);
+
+        if(!exists(node))
+        {
+            throw new IllegalArgumentException("Node does not exist");
+        }
+
+
+
+        return element;
     }
 
     /**
@@ -345,7 +536,15 @@ public class LinkedBinaryTree<E> implements BinaryTree<E>, Tree<E> {
      */
     @Override
     public Node<E> validate(Node<E> p) throws IllegalArgumentException {
-        return null;
+
+        checkValid(p);
+
+        if(!exists((p)))
+        {
+            throw new IllegalArgumentException("Node does not exist");
+        }
+
+        return p;
     }
 
     /**
@@ -385,4 +584,44 @@ public class LinkedBinaryTree<E> implements BinaryTree<E>, Tree<E> {
     public boolean isLastChild(Node<E> node) throws IllegalArgumentException {
         return false;
     }
+
+
+
+
+    // Custom Methods Below
+
+
+
+    private void checkNull(E item) throws IllegalArgumentException {
+        if (item == null)
+        {
+            throw new IllegalArgumentException("Element is null");
+        }
+    }
+
+    private boolean exists(Node<E> curr) {
+        if (isRoot(curr)) {
+            return true;
+        }
+        else if (isRoot(parent(curr))) {
+            return true;
+        }
+        else {
+            return exists(parent(curr));
+        }
+    }
+
+
+    private void checkValid(Node<E> node) throws IllegalArgumentException {
+        if (node == null)
+        {
+            throw new IllegalArgumentException("Node is null");
+        }
+        if (!(node instanceof BinaryTreeNode))
+        {
+            throw new IllegalArgumentException("Node is not a BinaryTreeNode");
+        }
+    }
+
+
 }
