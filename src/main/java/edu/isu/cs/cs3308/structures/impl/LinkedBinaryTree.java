@@ -8,7 +8,7 @@ import edu.isu.cs.cs3308.structures.Tree;
 import java.util.LinkedList;
 
 
-public class LinkedBinaryTree<E> implements BinaryTree<E>, Tree<E> {
+public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> implements Tree<E> {
 
     protected BinaryTreeNode<E> root = null;
 
