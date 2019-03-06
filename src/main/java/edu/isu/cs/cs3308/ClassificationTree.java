@@ -92,7 +92,7 @@ public class ClassificationTree {
         {
             if (tree.isExternal(currentNode))
             {
-                System.out.println("Good.\n");
+                System.out.println("Great!.\n");
             }
             else if (tree.left(currentNode) == null)
             {
@@ -110,13 +110,13 @@ public class ClassificationTree {
                 askQuestions(tree.right(currentNode), "");
             }
             else {
-                System.out.println("I don't know any " + notAnimalString(currentNode) +
-                        " animals that aren't " + currentNode.getElement());
-                System.out.println("What is the new animal? > ");
+                System.out.println("I have no memory of" + notAnimalString(currentNode) +
+                        " animals that are not " + currentNode.getElement());
+                System.out.println("What is the animal you are thinking of? > ");
                 String inputAnimal = scan.next();
 
-                System.out.println("What characteristic does a " + inputAnimal + " have that " +
-                        currentNode.getElement() + " does not? > ");
+                System.out.println("What makes a " + inputAnimal + " unique unlike " +
+                        currentNode.getElement() + " > ");
                 userInput = scan.next();
                 System.out.println();
 
@@ -125,7 +125,7 @@ public class ClassificationTree {
             }
         }
         else {
-            System.out.println("Is this animal " + currentNode.getElement() + "? (Y/N) > ");
+            System.out.println("Is the animal you are thinking of: " + currentNode.getElement() + "? (Y/N) > ");
             userInput = scan.next().toUpperCase();
             askQuestions(currentNode,userInput);
         }
